@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.screen
+package com.romsper.weatherapp.screen.rxjava
 
 import android.annotation.SuppressLint
 import com.romsper.weatherapp.network.ApiFactory
@@ -9,11 +9,13 @@ class MainActivityPresenter(private val view: MainActivityView) : MainActivityVi
 
     @SuppressLint("CheckResult")
     fun loadData(city: String) {
-        ApiFactory.retrofit().gerForecast(city)
+        ApiFactory.rxWeatherApi.getRxForecast(city)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({ result ->
                 view.setData(result)
             }, { error -> error.printStackTrace() })
     }
+
+
 }
