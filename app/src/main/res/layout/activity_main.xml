@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".screen.MainActivity">
 
@@ -12,27 +12,58 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:id="@+id/lol"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
+
+            <TextView
+                android:id="@+id/txt_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="72dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="#FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_search_24px"
+                android:contentDescription="Search"
+                 />
+
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <com.roacult.backdrop.BackdropLayout
         android:id="@+id/backdrop_container"
-        app:front_layout="@id/includedFront"
-        app:back_layout="@id/includedBack"
-        app:toolbarId="@id/toolbar"
-        app:peekHeight="150dp"
-        app:disable_when_open="false"
-        app:menuDrawable="@drawable/ic_menu_24px"
-        app:closeDrawable="@drawable/ic_close_24px"
-        app:animationDuration="400"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:animationDuration="500"
+        app:back_layout="@id/includedBack"
+        app:closeDrawable="@drawable/ic_arrow_upward_24px"
+        app:disable_when_open="false"
+        app:front_layout="@id/includedFront"
+        app:menuDrawable="@drawable/ic_arrow_downward_24px"
+        app:peekHeight="56dp"
+        app:toolbarId="@id/toolbar">
 
         <include
             android:id="@+id/includedBack"
-            layout="@layout/backlayer"/>
+            layout="@layout/backlayer" />
+
         <include
             android:id="@+id/includedFront"
-            layout="@layout/frontlayer"/>
+            layout="@layout/frontlayer" />
 
     </com.roacult.backdrop.BackdropLayout>
 

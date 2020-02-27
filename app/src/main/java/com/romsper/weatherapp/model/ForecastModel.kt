@@ -73,11 +73,11 @@ data class Main(
     @SerializedName("pressure")
     var pressure: Double,
     @SerializedName("sea_level")
-    var seaLevel: Double,
+    var seaLevel: Double?,
     @SerializedName("temp")
     var temp: Double,
     @SerializedName("temp_kf")
-    var tempKf: Double,
+    var tempKf: Double?,
     @SerializedName("temp_max")
     var tempMax: Double,
     @SerializedName("temp_min")
