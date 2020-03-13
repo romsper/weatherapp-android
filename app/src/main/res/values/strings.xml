@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">weatherapp</string>
     <string name="city">City</string>
-    <string name="forecast">FORECAST</string>
+    <string name="weather">WEATHER</string>
+    <string name="celsius">\u2103</string>
+    <string name="fahrenheit">\u2109</string>
 </resources>

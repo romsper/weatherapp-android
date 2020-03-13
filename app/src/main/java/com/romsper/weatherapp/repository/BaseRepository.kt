@@ -1,13 +1,13 @@
-package com.romsper.weatherapp.network
+package com.romsper.weatherapp.repository
 
 import android.util.Log
 import retrofit2.Response
 import java.io.IOException
+import com.romsper.weatherapp.network.Result
 
 open class BaseRepository{
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, errorMessage: String): T? {
-
         val result : Result<T> = safeApiResult(call,errorMessage)
         var data : T? = null
 
