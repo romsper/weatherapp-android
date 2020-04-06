@@ -8,18 +8,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.iammert.library.ui.multisearchviewlib.MultiSearchView
 import com.roacult.backdrop.BackdropLayout
 import com.romsper.weatherapp.R
+import com.romsper.weatherapp.adapter.ForecastAdapter
+import com.romsper.weatherapp.fragment.ForecastViewModel
 import com.romsper.weatherapp.fragment.WeatherViewModel
-import com.romsper.weatherapp.model.WeatherModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.backlayer.*
 import kotlinx.android.synthetic.main.frontlayer.*
 import kotlinx.android.synthetic.main.wether_fragment.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
     lateinit var weatherViewModel: WeatherViewModel
+    lateinit var forecastViewModel: ForecastViewModel
     private var units: String = ""
     private var symbols: String = ""
 
@@ -29,10 +33,12 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
+        forecastViewModel = ViewModelProvider(this).get(ForecastViewModel::class.java)
 
         backdropListener()
         switcherListener()
         weatherObserver()
+        forecastObserver()
         searchListener()
     }
 
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onItemSelected(index: Int, s: CharSequence) {
                 weatherViewModel.getWeather(s.toString(), units)
+                forecastViewModel.getForecast(s.toString(), units)
                 Log.v("Search", "onItemSelected: index: $index, query: $s")
             }
 
@@ -61,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onSearchComplete(index: Int, s: CharSequence) {
                 weatherViewModel.getWeather(s.toString(), units)
+                forecastViewModel.getForecast(s.toString(), units)
                 Log.v("Search", "complete: index: $index, query: $s")
             }
 
@@ -68,6 +76,15 @@ class MainActivity : AppCompatActivity() {
                 Log.v("Search", "remove: index: $index")
             }
         })
+
+    fun forecastObserver() = forecastViewModel.forecastModel.observe(this, Observer {
+        if (!it.isSuccessful) {
+            Toast.makeText(this, "City not found! Please, try again", Toast.LENGTH_SHORT).show()
+        } else {
+            forecast_recycler.layoutManager = LinearLayoutManager(this)
+            forecast_recycler.adapter = ForecastAdapter(it.body()!!.list)
+        }
+    })
 
     @SuppressLint("SetTextI18n")
     private fun weatherObserver() = weatherViewModel.weatherModel.observe(this, Observer {
@@ -77,14 +94,13 @@ class MainActivity : AppCompatActivity() {
             txt_weather.text = it.body()!!.weather.first().main
             txt_temperature.text = "${it.body()!!.main.tempMax} $symbols"
             txt_feels_like.text = "${it.body()!!.main.temp} $symbols"
-            setWeatherIcon(it.body()!!)
+            setWeatherIcon(it.body()!!.weather.first().main)
         }
     })
 
-    private fun setWeatherIcon(obj: WeatherModel) = when (obj.weather.first().main) {
+    fun setWeatherIcon(weather: String) = when (weather) {
         "Thunderstorm" -> img_weather.background = getDrawable(R.drawable.ic_thunder)
-        "Drizzle" -> img_weather.background = getDrawable(R.drawable.ic_rainy)
-        "Rain" -> img_weather.background = getDrawable(R.drawable.ic_rainy)
+        "Drizzle", "Rain" -> img_weather.background = getDrawable(R.drawable.ic_rainy)
         "Snow" -> img_weather.background = getDrawable(R.drawable.ic_snowy)
         "Clouds" -> img_weather.background = getDrawable(R.drawable.ic_cloudy)
         "Clear" -> img_weather.background = getDrawable(R.drawable.ic_sunny)

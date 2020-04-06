@@ -3,7 +3,7 @@ package com.romsper.weatherapp.fragment
 import androidx.lifecycle.MutableLiveData
 import com.romsper.weatherapp.model.WeatherModel
 import com.romsper.weatherapp.network.ApiFactory
-import com.romsper.weatherapp.screen.corutines.BaseViewModel
+import com.romsper.weatherapp.network.BaseViewModel
 import retrofit2.Response
 
 class WeatherViewModel: BaseViewModel() {

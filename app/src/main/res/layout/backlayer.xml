@@ -6,10 +6,9 @@
     android:orientation="vertical"
     android:padding="@dimen/padding_16dp">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/forecast_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:layout_height="match_parent" />
+
 </LinearLayout>

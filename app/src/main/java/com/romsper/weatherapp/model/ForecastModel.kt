@@ -10,7 +10,7 @@ data class ForecastModel(
     @SerializedName("cod")
     var cod: String,
     @SerializedName("list")
-    var list: List<X>,
+    var list: List<Forecast>,
     @SerializedName("message")
     var message: Double
 )
@@ -41,7 +41,7 @@ data class Coord(
     var lon: Double
 )
 
-data class X(
+data class Forecast(
     @SerializedName("clouds")
     var clouds: Clouds,
     @SerializedName("dt")
