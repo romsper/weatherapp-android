@@ -1,16 +1,15 @@
-package com.romsper.weatherapp
+package com.romsper.weatherapp.screen
 
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.romsper.weatherapp.screen.MainActivity
+import com.romsper.weatherapp.R
 import kotlinx.android.synthetic.main.activity_splashscreen.*
 
-
 class SplashActivity : AppCompatActivity() {
-    private lateinit var weatherIconAnimation: AnimationDrawable
+    lateinit var weatherIconAnimation: AnimationDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,13 +17,14 @@ class SplashActivity : AppCompatActivity() {
 
         val animation = splash_weather_icon as ImageView
         animation.setBackgroundResource(R.drawable.animation_weather_icon)
-        val weatherIconAnimation = animation.background as AnimationDrawable
+        weatherIconAnimation = animation.background as AnimationDrawable
         weatherIconAnimation.start()
 
+        startActivity(Intent(this, AuthorizationActivity::class.java))
+    }
 
-        splash_weather_icon.setOnClickListener {
-            weatherIconAnimation.stop()
-            startActivity(Intent(this, MainActivity::class.java))
-        }
+    override fun onPause() {
+        super.onPause()
+        weatherIconAnimation.stop()
     }
 }

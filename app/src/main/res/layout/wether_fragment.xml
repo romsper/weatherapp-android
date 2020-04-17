@@ -3,11 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_button"
-    android:backgroundTint="@color/design_default_color_on_secondary"
+    android:background="@drawable/round_fragment"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
-    android:layout_margin="@dimen/padding_16dp"
     tools:context=".fragment.WeatherFragment">
 
     <ImageView

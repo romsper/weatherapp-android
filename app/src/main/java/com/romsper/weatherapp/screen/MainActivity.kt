@@ -1,6 +1,10 @@
 package com.romsper.weatherapp.screen
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,8 +19,10 @@ import com.romsper.weatherapp.R
 import com.romsper.weatherapp.adapter.ForecastAdapter
 import com.romsper.weatherapp.fragment.ForecastViewModel
 import com.romsper.weatherapp.fragment.WeatherViewModel
+import com.romsper.weatherapp.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.backlayer.*
+import kotlinx.android.synthetic.main.dialog_auth_notification.*
 import kotlinx.android.synthetic.main.frontlayer.*
 import kotlinx.android.synthetic.main.wether_fragment.*
 
@@ -24,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
     lateinit var weatherViewModel: WeatherViewModel
     lateinit var forecastViewModel: ForecastViewModel
+    lateinit var dialog: Dialog
     private var units: String = ""
     private var symbols: String = ""
 
@@ -35,11 +42,25 @@ class MainActivity : AppCompatActivity() {
         weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
         forecastViewModel = ViewModelProvider(this).get(ForecastViewModel::class.java)
 
+        dialog = Dialog(this)
+
         backdropListener()
         switcherListener()
         weatherObserver()
         forecastObserver()
         searchListener()
+
+        if (intent.extras?.get("popup") == true) showDialog()
+    }
+
+    private fun showDialog() {
+        dialog.setContentView(R.layout.dialog_auth_notification)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.btn_close_dialog.setOnClickListener {
+            dialog.dismiss()
+            Toast.makeText(this, "No problem! Just enjoy the app!", Toast.LENGTH_SHORT).show() }
+        dialog.btn_submit_dialog.setOnClickListener { startActivity(Intent(this, AuthorizationActivity::class.java)) }
+        dialog.show()
     }
 
     private fun backdropListener() = backdrop_container.setOnBackdropChangeStateListener {

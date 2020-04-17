@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity">
+    android:id="@+id/linear_splash"
+    tools:context=".screen.SplashActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,13 +19,6 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:background="@drawable/ic_sunny" />
-
-        <TextView
-            android:id="@+id/text_splashscreen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tap on the weather icon!"
-            android:textColor="@color/blueGrey"/>
 
     </LinearLayout>
 

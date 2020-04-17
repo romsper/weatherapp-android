@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.screen
+package com.romsper.weatherapp.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import com.romsper.weatherapp.model.ForecastModel
