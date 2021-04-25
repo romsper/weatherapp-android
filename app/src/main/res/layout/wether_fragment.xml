@@ -6,7 +6,7 @@
     android:background="@drawable/round_fragment"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
-    tools:context=".fragment.WeatherFragment">
+    tools:context=".ui.view.WeatherFragment">
 
     <ImageView
         android:id="@+id/img_weather"

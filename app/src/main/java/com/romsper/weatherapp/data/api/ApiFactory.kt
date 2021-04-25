@@ -1,8 +1,7 @@
-package com.romsper.weatherapp.network
+package com.romsper.weatherapp.data.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.romsper.weatherapp.BuildConfig
-import com.romsper.weatherapp.api.ApiWeather
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

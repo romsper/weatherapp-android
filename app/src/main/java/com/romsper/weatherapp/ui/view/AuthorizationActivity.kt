@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.screen
+package com.romsper.weatherapp.ui.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.romsper.weatherapp.viewModel.AuthorizationViewModel
+import com.romsper.weatherapp.ui.viewModel.AuthorizationViewModel
 import com.romsper.weatherapp.R
 import kotlinx.android.synthetic.main.activity_authorization.*
 import kotlinx.android.synthetic.main.activity_splashscreen.linear_splash
@@ -28,7 +28,12 @@ class AuthorizationActivity : AppCompatActivity() {
         }
 
         btn_skip_auth.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java).putExtra("popup", true))
+            try {
+                startActivity(Intent(this, MainActivity::class.java).putExtra("popup", true))
+            } finally {
+                finish()
+            }
+
         }
     }
 

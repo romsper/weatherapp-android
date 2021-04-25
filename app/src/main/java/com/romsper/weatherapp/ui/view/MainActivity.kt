@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.screen
+package com.romsper.weatherapp.ui.view
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.iammert.library.ui.multisearchviewlib.MultiSearchView
 import com.roacult.backdrop.BackdropLayout
 import com.romsper.weatherapp.R
-import com.romsper.weatherapp.adapter.ForecastAdapter
-import com.romsper.weatherapp.fragment.ForecastViewModel
-import com.romsper.weatherapp.fragment.WeatherViewModel
-import com.romsper.weatherapp.viewModel.MainViewModel
+import com.romsper.weatherapp.ui.adapter.ForecastAdapter
+import com.romsper.weatherapp.ui.viewModel.ForecastViewModel
+import com.romsper.weatherapp.ui.viewModel.WeatherViewModel
+import com.romsper.weatherapp.ui.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.backlayer.*
 import kotlinx.android.synthetic.main.dialog_auth_notification.*
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var dialog: Dialog
     private var units: String = ""
     private var symbols: String = ""
+    private var city: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,84 @@ class MainActivity : AppCompatActivity() {
         searchListener()
 
         if (intent.extras?.get("popup") == true) showDialog()
+        units = getString(R.string.metric)
+        symbols = getString(R.string.celsius)
+    }
+
+    //---Search---
+
+    private fun searchListener() =
+        multiSearchView.setSearchViewListener(object : MultiSearchView.MultiSearchViewListener {
+
+            override fun onItemSelected(index: Int, s: CharSequence) {
+                city = s.toString()
+                initSearch()
+                Log.v("SEARCH", "onItemSelected: index: $index, query: $s")
+            }
+
+            override fun onTextChanged(index: Int, s: CharSequence) {
+                Log.v("SEARCH", "changed: index: $index, query: $s")
+            }
+
+            override fun onSearchComplete(index: Int, s: CharSequence) {
+                city = s.toString()
+                initSearch()
+                Log.v("SEARCH", "complete: index: $index, query: $s")
+            }
+
+            override fun onSearchItemRemoved(index: Int) {
+                Log.v("SEARCH", "remove: index: $index")
+            }
+        })
+
+    private fun initSearch() {
+        weatherViewModel.getWeather(city, units)
+        forecastViewModel.getForecast(city, units)
+    }
+
+    //------------
+
+    //---Observers---
+
+    fun forecastObserver() = forecastViewModel.forecastModel.observe(this, Observer {
+        if (!it.isSuccessful) {
+            Toast.makeText(this, getString(R.string.city_not_found), Toast.LENGTH_SHORT).show()
+        } else {
+            forecast_recycler.layoutManager = LinearLayoutManager(this)
+            forecast_recycler.adapter = ForecastAdapter(it.body()!!.list, symbols)
+            forecast_empty_logo.visibility = View.GONE
+        }
+    })
+
+    @SuppressLint("SetTextI18n")
+    private fun weatherObserver() = weatherViewModel.weatherModel.observe(this, Observer {
+        if (!it.isSuccessful) {
+            Toast.makeText(this, getString(R.string.city_not_found), Toast.LENGTH_SHORT).show()
+        } else {
+            txt_weather.text = it.body()!!.weather.first().main
+            txt_temperature.text = "${it.body()!!.main.tempMax} $symbols"
+            txt_feels_like.text = "${it.body()!!.main.temp} $symbols"
+            setWeatherIcon()
+        }
+    })
+
+    //------------
+
+    private fun setWeatherIcon() = weatherViewModel.getWeatherIcon()?.let { img_weather.background = getDrawable(it) } ?: Toast.makeText(
+        this, getString(R.string.weather_unknown), Toast.LENGTH_SHORT).show()
+
+    private fun switcherListener() {
+        switcher_weather.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                units = getString(R.string.imperial)
+                symbols = getString(R.string.fahrenheit)
+                initSearch()
+            } else {
+                units = getString(R.string.metric)
+                symbols = getString(R.string.celsius)
+                initSearch()
+            }
+        }
     }
 
     private fun showDialog() {
@@ -58,7 +137,7 @@ class MainActivity : AppCompatActivity() {
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.btn_close_dialog.setOnClickListener {
             dialog.dismiss()
-            Toast.makeText(this, "No problem! Just enjoy the app!", Toast.LENGTH_SHORT).show() }
+            Toast.makeText(this, getString(R.string.dialog_closed), Toast.LENGTH_SHORT).show() }
         dialog.btn_submit_dialog.setOnClickListener { startActivity(Intent(this, AuthorizationActivity::class.java)) }
         dialog.show()
     }
@@ -73,80 +152,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun searchListener() =
-        multiSearchView.setSearchViewListener(object : MultiSearchView.MultiSearchViewListener {
-
-            override fun onItemSelected(index: Int, s: CharSequence) {
-                weatherViewModel.getWeather(s.toString(), units)
-                forecastViewModel.getForecast(s.toString(), units)
-                Log.v("Search", "onItemSelected: index: $index, query: $s")
-            }
-
-            override fun onTextChanged(index: Int, s: CharSequence) {
-                Log.v("Search", "changed: index: $index, query: $s")
-            }
-
-            override fun onSearchComplete(index: Int, s: CharSequence) {
-                weatherViewModel.getWeather(s.toString(), units)
-                forecastViewModel.getForecast(s.toString(), units)
-                Log.v("Search", "complete: index: $index, query: $s")
-            }
-
-            override fun onSearchItemRemoved(index: Int) {
-                Log.v("Search", "remove: index: $index")
-            }
-        })
-
-    fun forecastObserver() = forecastViewModel.forecastModel.observe(this, Observer {
-        if (!it.isSuccessful) {
-            Toast.makeText(this, "City not found! Please, try again", Toast.LENGTH_SHORT).show()
-        } else {
-            forecast_recycler.layoutManager = LinearLayoutManager(this)
-            forecast_recycler.adapter = ForecastAdapter(it.body()!!.list)
-        }
-    })
-
-    @SuppressLint("SetTextI18n")
-    private fun weatherObserver() = weatherViewModel.weatherModel.observe(this, Observer {
-        if (!it.isSuccessful) {
-            Toast.makeText(this, "City not found! Please, try again", Toast.LENGTH_SHORT).show()
-        } else {
-            txt_weather.text = it.body()!!.weather.first().main
-            txt_temperature.text = "${it.body()!!.main.tempMax} $symbols"
-            txt_feels_like.text = "${it.body()!!.main.temp} $symbols"
-            setWeatherIcon(it.body()!!.weather.first().main)
-        }
-    })
-
-    fun setWeatherIcon(weather: String) = when (weather) {
-        "Thunderstorm" -> img_weather.background = getDrawable(R.drawable.ic_thunder)
-        "Drizzle", "Rain" -> img_weather.background = getDrawable(R.drawable.ic_rainy)
-        "Snow" -> img_weather.background = getDrawable(R.drawable.ic_snowy)
-        "Clouds" -> img_weather.background = getDrawable(R.drawable.ic_cloudy)
-        "Clear" -> img_weather.background = getDrawable(R.drawable.ic_sunny)
-        else -> {
-            img_weather.background = getDrawable(R.drawable.ic_sunny)
-            Toast.makeText(
-                this,
-                "I don't know the weather and set the Sun icon!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
-    private fun switcherListener() {
-        units = "metric"
-        symbols = getString(R.string.celsius)
-        switcher_weather.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                units = "imperial"
-                symbols = getString(R.string.fahrenheit)
-            } else {
-                units = "metric"
-                symbols = getString(R.string.celsius)
-            }
-        }
-    }
-
 }

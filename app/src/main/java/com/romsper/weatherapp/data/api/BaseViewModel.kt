@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.network
+package com.romsper.weatherapp.data.api
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*

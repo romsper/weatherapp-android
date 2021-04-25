@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.screen
+package com.romsper.weatherapp.ui.view
 
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
@@ -20,7 +20,11 @@ class SplashActivity : AppCompatActivity() {
         weatherIconAnimation = animation.background as AnimationDrawable
         weatherIconAnimation.start()
 
-        startActivity(Intent(this, AuthorizationActivity::class.java))
+        try {
+            startActivity(Intent(this, AuthorizationActivity::class.java))
+        } finally {
+            finish()
+        }
     }
 
     override fun onPause() {

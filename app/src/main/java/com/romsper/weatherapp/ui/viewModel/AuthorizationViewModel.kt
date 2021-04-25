@@ -1,6 +1,6 @@
-package com.romsper.weatherapp.viewModel
+package com.romsper.weatherapp.ui.viewModel
 
-import com.romsper.weatherapp.network.BaseViewModel
+import com.romsper.weatherapp.data.api.BaseViewModel
 
 class AuthorizationViewModel : BaseViewModel() {
 

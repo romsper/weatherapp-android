@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.model
+package com.romsper.weatherapp.data.model
 import com.google.gson.annotations.SerializedName
 
 

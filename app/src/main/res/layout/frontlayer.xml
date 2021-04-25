@@ -51,7 +51,7 @@
 
         <fragment
             android:id="@+id/weather_fragment"
-            android:name="com.romsper.weatherapp.fragment.WeatherFragment"
+            android:name="com.romsper.weatherapp.ui.view.WeatherFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />

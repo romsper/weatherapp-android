@@ -1,4 +1,4 @@
-package com.romsper.weatherapp.network
+package com.romsper.weatherapp.data.api
 
 sealed class Result<out T: Any> {
     data class Success<out T : Any>(val data: T) : Result<T>()

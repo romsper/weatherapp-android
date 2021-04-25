@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".screen.SplashActivity"
+            android:name="com.romsper.weatherapp.ui.view.SplashActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.AuthorizationActivity" />
-        <activity android:name=".screen.MainActivity" />
+        <activity android:name="com.romsper.weatherapp.ui.view.AuthorizationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name="com.romsper.weatherapp.ui.view.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>

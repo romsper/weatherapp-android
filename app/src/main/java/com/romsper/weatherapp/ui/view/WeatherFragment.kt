@@ -1,17 +1,14 @@
-package com.romsper.weatherapp.fragment
+package com.romsper.weatherapp.ui.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.romsper.weatherapp.R
-import kotlinx.android.synthetic.main.frontlayer.*
-import kotlinx.android.synthetic.main.wether_fragment.*
+import com.romsper.weatherapp.ui.viewModel.WeatherViewModel
 
 class WeatherFragment : Fragment() {
 

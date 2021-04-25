@@ -1,8 +1,8 @@
-package com.romsper.weatherapp.api
+package com.romsper.weatherapp.data.api
 
-import com.romsper.weatherapp.model.ForecastModel
+import com.romsper.weatherapp.data.model.ForecastModel
 import com.romsper.weatherapp.BuildConfig
-import com.romsper.weatherapp.model.WeatherModel
+import com.romsper.weatherapp.data.model.WeatherModel
 import io.reactivex.Observable
 import kotlinx.coroutines.Deferred
 import retrofit2.Response

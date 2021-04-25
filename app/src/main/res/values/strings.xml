@@ -4,4 +4,9 @@
     <string name="weather">WEATHER</string>
     <string name="celsius">\u2103</string>
     <string name="fahrenheit">\u2109</string>
+    <string name="metric">metric</string>
+    <string name="imperial">imperial</string>
+    <string name="city_not_found">City not found! Please, try again</string>
+    <string name="weather_unknown">I don\'t know the weather and can\'t new icon!</string>
+    <string name="dialog_closed">No problem! Just enjoy the app!</string>
 </resources>

@@ -1,12 +1,12 @@
-package com.romsper.weatherapp.viewModel
+package com.romsper.weatherapp.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import com.romsper.weatherapp.model.ForecastModel
-import com.romsper.weatherapp.network.ApiFactory
-import com.romsper.weatherapp.network.BaseViewModel
+import com.romsper.weatherapp.data.model.ForecastModel
+import com.romsper.weatherapp.data.api.ApiFactory
+import com.romsper.weatherapp.data.api.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
-    val forecastModel = MutableLiveData<ForecastModel>()
+    private val forecastModel = MutableLiveData<ForecastModel>()
 
     fun getWeather(city: String) {
         doDefault {

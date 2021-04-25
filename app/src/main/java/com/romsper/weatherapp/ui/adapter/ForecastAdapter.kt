@@ -1,16 +1,16 @@
-package com.romsper.weatherapp.adapter
+package com.romsper.weatherapp.ui.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.romsper.weatherapp.R
-import com.romsper.weatherapp.model.Forecast
+import com.romsper.weatherapp.data.model.Forecast
 import kotlinx.android.synthetic.main.forecast_fragment.view.*
 
-class ForecastAdapter(private val items: List<Forecast>) :
+class ForecastAdapter(private val items: List<Forecast>, private var symbols: String) :
     RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -23,7 +23,7 @@ class ForecastAdapter(private val items: List<Forecast>) :
     }
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
-        holder.bind(items[position * 7])
+        holder.bind(items[position.plus(1) * 7])
     }
 
     override fun getItemCount() = items.size % 7
@@ -34,16 +34,22 @@ class ForecastAdapter(private val items: List<Forecast>) :
             itemView.onFocusChangeListener = this
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: Forecast) {
             itemView.forecast_weather.text = item.weather.first().main
-            itemView.forecast_temp.text = item.main.temp.toString()
+            itemView.forecast_temp.text = "${item.main.tempMax} $symbols"
+            itemView.forecast_date.text = dateConverter(item.dtTxt)
             setWeatherIcon(item.weather.first().main)
         }
+
+        private fun dateConverter(date: String) = date.split(' ')[0].split('-')[2]
 
         private fun setWeatherIcon(weather: String) = when (weather) {
             "Thunderstorm" -> itemView.forecast_weather_icon.setBackgroundResource(R.drawable.ic_thunder)
             "Drizzle", "Rain" -> itemView.forecast_weather_icon.setBackgroundResource(R.drawable.ic_rainy)
+            //---Experiment---
             "Snow" -> itemView.forecast_weather_icon.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_snowy))
+            //---
             "Clouds" -> itemView.forecast_weather_icon.setBackgroundResource(R.drawable.ic_cloudy)
             "Clear" -> itemView.forecast_weather_icon.setBackgroundResource(R.drawable.ic_sunny)
             else -> {
